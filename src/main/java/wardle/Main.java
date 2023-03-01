@@ -56,15 +56,17 @@ public class Main {
                System.out.print((round+1) + " rounds! Nice work!");
             }
         } else {
-            System.out.println("You lost! The word was: " + wardl);
+            System.out.print("You lost! The word was: " + wardl);
         }
+        System.out.println("");
     }
     public static void main(String[] args) throws Exception {
         // Variable setup
         String chosen;
         // Set up the Word
-        chosen = wardlGet();
-        /*For debugging, use: chosen = "fleck";*/
+        //chosen = wardlGet();
+        // For debugging, use: 
+        chosen = "fleck";
         // Introduction
         introduction(chosen);
         // game runs

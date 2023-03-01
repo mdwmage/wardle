@@ -1,4 +1,5 @@
 # packages
 *.jar
+*.tape
 .vscode/
 target/

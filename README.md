@@ -1,6 +1,6 @@
 # wardle
 A terminal/graphical copy of wordle
-
+![gameplay-gif](examples/gameplay.gif)
 This is currently a very simple basic copy of wordle. More feature coming soon. (Trust me)
 
 # Build instructions
