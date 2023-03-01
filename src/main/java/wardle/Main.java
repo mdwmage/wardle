@@ -6,7 +6,7 @@ import java.lang.*;
 import java.io.*;
 
 public class Main {
-    // World-Wide Setup
+    // File-Wide Scanner
     public static Scanner scan = new Scanner(System.in);
     // Colours
     public static String CORRECT = "\u001B[32m";
@@ -21,8 +21,7 @@ public class Main {
         System.out.println("Green is " + CORRECT + "Correct!");
         System.out.println(RESET + "Yellow is " + MISPLACED + "Misplaced!");
         System.out.println(RESET + "Red is " + WRONG + "Wrong!" + RESET);
-        linebreak(25);
-        //System.out.println(chosen);
+        linebreak(35);
         System.out.println("Good luck!");
     }
     public static void gameloop(String wardl) {
@@ -48,17 +47,20 @@ public class Main {
         ending(correct, round, wardl);
     }
     public static void ending(boolean win, int round, String wardl) {
+        linebreak(35);
+        // Checks if you won
         if (win) {
             System.out.print("You win! Congrats on guessing the word! You won in ");
+            // Checks how many rounds you won in
             if ((round+1) == 1) {
-                System.out.print((round+1) + " round! Thats very exciting!");
+                System.out.println((round+1) + " round! Thats very exciting!");
             } else {
-               System.out.print((round+1) + " rounds! Nice work!");
+               System.out.println((round+1) + " rounds! Nice work!");
             }
         } else {
-            System.out.print("You lost! The word was: " + wardl);
+            // Loss message
+            System.out.print("You lost! The word was: " + wardl + ". Better luck next time.");
         }
-        System.out.println("");
     }
     public static void main(String[] args) throws Exception {
         // Variable setup
@@ -78,6 +80,7 @@ public class Main {
         System.out.println("");
     }
     public static String prompt(int round) {
+        // Pretty Prompt for player
         System.out.print("[" + PROMPT + "Round" + RESET + BOLD + ":" + RESET);
         if (round < 3) {
             System.out.print(CORRECT + (round + 1) + RESET);
@@ -89,7 +92,6 @@ public class Main {
         System.out.print("]" + PROMPT + "> " + RESET);
         return scan.nextLine();
     }
-
     public static String wardlGet() throws Exception {
         // Setup
         Random rand = new Random();
@@ -100,16 +102,13 @@ public class Main {
         int j = 0;
         // Parse File
         while ((output = reader.readLine()) != null) {
-            wardles[j] = output;
-            j++;
+            wardles[j] = output; j++;
         }
         // Output
         output = wardles[rand.nextInt(wardles.length)];
         while (output == "null") {
             output = wardles[rand.nextInt(wardles.length)];
         }
-        // Cleanup
-        reader.close();;
         // Return
         return output;
     }
