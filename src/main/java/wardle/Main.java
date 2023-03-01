@@ -64,9 +64,8 @@ public class Main {
         // Variable setup
         String chosen;
         // Set up the Word
-        //chosen = wardlGet();
-        // For debugging, use: 
-        chosen = "fleck";
+        chosen = wardlGet();
+        // For debugging, use: chosen = "fleck";
         // Introduction
         introduction(chosen);
         // game runs
