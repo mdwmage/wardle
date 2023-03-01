@@ -16,13 +16,9 @@ public class Main {
     public static String BOLD = "\u001B[1m";
     public static String PROMPT = "\u001B[34m";
     // Functions
-    public static void introduction(String chosen) {
-        System.out.println("Welcome to Wardle, a very exciting game\nYou have six attempts to guess a five letter word.");
-        System.out.println("Green is " + CORRECT + "Correct!");
-        System.out.println(RESET + "Yellow is " + MISPLACED + "Misplaced!");
-        System.out.println(RESET + "Red is " + WRONG + "Wrong!" + RESET);
-        linebreak(35);
-        System.out.println("Good luck!");
+    public static void introduction() {
+        System.out.println("Welcome to Wardle, a very exciting game.");
+        helper();
     }
     public static void gameloop(String wardl) {
         boolean correct = false;
@@ -47,7 +43,7 @@ public class Main {
         ending(correct, round, wardl);
     }
     public static void ending(boolean win, int round, String wardl) {
-        linebreak(35);
+        linebreak(45);
         // Checks if you won
         if (win) {
             System.out.print("You win! Congrats on guessing the word! You won in ");
@@ -59,19 +55,35 @@ public class Main {
             }
         } else {
             // Loss message
-            System.out.print("You lost! The word was: " + wardl + ". Better luck next time.");
+            System.out.println("You lost! The word was: " + wardl + ". Better luck next time.");
         }
     }
     public static void main(String[] args) throws Exception {
         // Variable setup
+        boolean playing = true;
         String chosen;
+        String input;
         // Set up the Word
-        chosen = wardlGet();
-        // For debugging, use: chosen = "fleck";
         // Introduction
-        introduction(chosen);
+        introduction();
         // game runs
-        gameloop(chosen);
+        while(playing) {
+            System.out.println(RESET + "Type to play to play, help to get a little guide, or exit to quit the program");
+            System.out.print("[" + WRONG + "MENU" + RESET + "]" + PROMPT + "> " + RESET);
+            input = scan.nextLine();
+            if (input.equals("play")) {
+                System.out.println("Good luck!");
+                linebreak(45);
+                chosen = wardlGet();
+                // For debugging, use: chosen = "fleck";
+                gameloop(chosen);
+            } else if (input.equals("exit")) {
+                System.out.println("Thanks for playing!");
+                playing = false;
+            } else if (input.equals("help")) {
+                helper();
+            } else System.out.println("Command not understood. Could you try retyping that?");
+        }
     }
     public static void linebreak(int rep) {
         for (int i = 0; i < rep; i++) {
@@ -133,5 +145,14 @@ public class Main {
         }
         System.out.println("");
         System.out.println(PROMPT + BOLD + "~ " + RESET + BOLD + right + RESET + CORRECT+" Right" + RESET + ", "+ BOLD + misplaced + RESET + MISPLACED + " Misplaced" + RESET + ", " + BOLD + (5 - (right+misplaced)) + RESET + WRONG + " Wrong" + RESET + PROMPT + BOLD + " ~" + RESET);
+    }
+    public static void helper() {
+        System.out.println("You have six attempts to guess a five letter word.");
+        System.out.println("You'll get your word back in 3 different colours!");
+        System.out.println("Green is " + CORRECT + "Correct!");
+        System.out.println(RESET + "Yellow is " + MISPLACED + "Misplaced!");
+        System.out.println(RESET + "Red is " + WRONG + "Wrong!" + RESET);
+        System.out.println("Try to guess the word before you run out of rounds!");
+        linebreak(45);
     }
 }
