@@ -4,8 +4,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.springframework</groupId>
-    <artifactId>gs-maven</artifactId>
+    <groupId>org.mdw</groupId>
+    <artifactId>wardle</artifactId>
     <packaging>jar</packaging>
     <version>0.1.0</version>
 
@@ -13,6 +13,13 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+    <distributionManagement>
+        <repository>
+          <id>github</id>
+          <name>GitHub gecotron Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/gecotron/wardle</url>
+        </repository>
+     </distributionManagement>     
 
     <build>
         <finalName>wardle</finalName>
