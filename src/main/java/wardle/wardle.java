@@ -6,7 +6,7 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-public class Main {
+public class wardle {
     // File-Wide Scanner
     public static Scanner scan = new Scanner(System.in);
     // Colours
@@ -131,7 +131,7 @@ public class Main {
         Random rand = new Random();
         String output;
         String[] wardles = new String[2315];
-        InputStream inputStream = Main.class.getResourceAsStream("/wardlWords.txt");
+        InputStream inputStream = wardle.class.getResourceAsStream("/wardlWords.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         int j = 0;
         // Parse File
