@@ -72,6 +72,9 @@ public class wardle {
     // Ending message when game ends
     public static void ending(boolean win, int round, String wardl) {
         linebreak(45);
+        correctChar.clear();
+        misplacedChar.clear();
+        wrongChar.clear();
         // Checks if you won
         if (win) {
             System.out.print("You win! Congrats on guessing the word! You won in ");
@@ -103,8 +106,9 @@ public class wardle {
             if (input.toUpperCase().toUpperCase().equals("PLAY")) {
                 System.out.println("Good luck!");
                 linebreak(45);
-                chosen = wardlGet();
-                // For debugging, use: chosen = "fleck";
+                //chosen = wardlGet();
+                // For debugging, use: 
+		chosen = "fleck";
                 gameloop(chosen);
             } else if (input.toUpperCase().equals("EXIT")) {
                 System.out.println("Thanks for playing!");
@@ -190,6 +194,8 @@ public class wardle {
         int right = 0;
         int misplaced = 0;
         StringBuilder testwardle = new StringBuilder(wardl);
+        // Spacing
+        System.out.print("                 ");
         // Parse string
         for (int i = 0; i < 5; i++) {
             if (input.charAt(i) == testwardle.charAt(i)) {
@@ -209,7 +215,7 @@ public class wardle {
             }
         }
         System.out.println("");
-        System.out.println(PROMPT + BOLD + "~ " + RESET + BOLD + right + RESET + CORRECT + " Right" + RESET + ", "
+        System.out.println(PROMPT + BOLD + "   ~ " + RESET + BOLD + right + RESET + CORRECT + " Right" + RESET + ", "
                 + BOLD + misplaced + RESET + MISPLACED + " Misplaced" + RESET + ", " + BOLD + (5 - (right + misplaced))
                 + RESET + WRONG + " Wrong" + RESET + PROMPT + BOLD + " ~" + RESET);
         termKeyboard(qwerty);
