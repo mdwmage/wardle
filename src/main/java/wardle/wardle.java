@@ -7,7 +7,7 @@ import java.lang.*;
 import java.io.*;
 
 public class wardle {
-    // File-Wide Scanner
+    // Program-Wide Scanner
     public static Scanner scan = new Scanner(System.in);
     // Colours
     public static String CORRECT = "\u001B[32m";
@@ -16,11 +16,20 @@ public class wardle {
     public static String RESET = "\u001B[0m";
     public static String BOLD = "\u001B[1m";
     public static String PROMPT = "\u001B[34m";
+    // Number Collectors
+    public static ArrayList<Character> correctChar = new ArrayList<Character>();
+    public static ArrayList<Character> misplacedChar = new ArrayList<Character>();
+    public static ArrayList<Character> wrongChar = new ArrayList<Character>();
+    // Game Settings
+    public static boolean qwerty = false;
+
     // Minimalistic main function
     public static void main(String[] args) throws Exception {
         game();
     }
-    // Functions
+    /* Functions */
+
+    /* Main Game Functions */
     // Runs quick introduction
     public static void introduction() {
         System.out.println("Welcome to Wardle, a very exciting game.");
@@ -32,8 +41,9 @@ public class wardle {
         System.out.println("Try to guess the word before you run out of rounds!");
         linebreak(45);
     }
+
     // Main gameloop
-    public static void gameloop(String wardl) {
+    public static void gameloop(String wardl) throws Exception {
         // Variable setup
         boolean correct = false; // Win-condition bool
         String playerInput;
@@ -59,6 +69,7 @@ public class wardle {
         ending(correct, round, wardl);
     }
 
+    // Ending message when game ends
     public static void ending(boolean win, int round, String wardl) {
         linebreak(45);
         // Checks if you won
@@ -75,36 +86,40 @@ public class wardle {
             System.out.println("You lost! The word was: " + wardl + ". Better luck next time.");
         }
     }
+
     // game stuffed into function for package use
     public static void game() throws Exception {
         // Variable setup
         boolean playing = true;
         String chosen;
         String input;
-        // Set up the Word
-        // Introduction
+        // introduction
         introduction();
         // game runs
         while (playing) {
             System.out.println(RESET + "Type to play to play, help to get a little guide, or exit to quit the program");
             System.out.print("[" + WRONG + "MENU" + RESET + "]" + PROMPT + "> " + RESET);
             input = scan.nextLine();
-            if (input.equals("play")) {
+            if (input.toUpperCase().toUpperCase().equals("PLAY")) {
                 System.out.println("Good luck!");
                 linebreak(45);
                 chosen = wardlGet();
                 // For debugging, use: chosen = "fleck";
                 gameloop(chosen);
-            } else if (input.equals("exit")) {
+            } else if (input.toUpperCase().equals("EXIT")) {
                 System.out.println("Thanks for playing!");
                 playing = false;
-            } else if (input.equals("help")) {
+            } else if (input.toUpperCase().equals("HELP")) {
                 introduction();
+            } else if (input.toUpperCase().equals("SETTINGS") || input.toUpperCase().equals("SETTING")) {
+                settings();
             } else
                 System.out.println("Command not understood. Could you try retyping that?");
         }
     }
 
+    /* Utility Tools */
+    // Linebreak tool. Saves a few LOC
     public static void linebreak(int rep) {
         for (int i = 0; i < rep; i++) {
             System.out.print("*");
@@ -112,6 +127,7 @@ public class wardle {
         System.out.println("");
     }
 
+    // Very pretty user prompt
     public static String prompt(int round) {
         // Pretty Prompt for player
         System.out.print("[" + PROMPT + "Round" + RESET + BOLD + ":" + RESET);
@@ -126,6 +142,7 @@ public class wardle {
         return scan.nextLine();
     }
 
+    // Pull word from list
     public static String wardlGet() throws Exception {
         // Setup
         Random rand = new Random();
@@ -148,7 +165,27 @@ public class wardle {
         return output;
     }
 
-    public static void wardleCompare(String input, String wardl) {
+    public static void settings() {
+        String input;
+        System.out.println("Welcome to the " + BOLD + "game settings!" + RESET);
+        System.out.println(
+                "There is not much here, but you can enable a pretty qwerty keyboard by typing \"qwerty\". It's a 2 way toggle.");
+        System.out.print("[" + MISPLACED + BOLD + "SETTINGS" + RESET + "]" + PROMPT + "> " + RESET);
+        input = scan.nextLine();
+        if (input.toUpperCase().equals("QWERTY") && qwerty == false) {
+            qwerty = true;
+            System.out.println("qwerty termboard enabled");
+        } else if (input.toUpperCase().equals("QWERTY") && qwerty == true) {
+            qwerty = false;
+            System.out.println("qwerty termboard disabled");
+        } else {
+            System.out.println("Command not understood");
+        }
+    }
+
+    /* Fancy Pretty Output Functions */
+    // Fancy colour output
+    public static void wardleCompare(String input, String wardl) throws Exception {
         // variable setup
         int right = 0;
         int misplaced = 0;
@@ -157,21 +194,63 @@ public class wardle {
         for (int i = 0; i < 5; i++) {
             if (input.charAt(i) == testwardle.charAt(i)) {
                 System.out.print(CORRECT + input.charAt(i) + RESET);
+                correctChar.add(input.charAt(i));
                 testwardle.replace(i, (i + 1), " ");
                 right++;
             } else if (testwardle.toString().contains(String.valueOf(input.charAt(i)))) {
                 System.out.print(MISPLACED + input.charAt(i) + RESET);
+                misplacedChar.add(input.charAt(i));
                 testwardle.replace((testwardle.indexOf(String.valueOf(input.charAt(i)))),
                         (testwardle.indexOf(String.valueOf(input.charAt(i))) + 1), " ");
                 misplaced++;
             } else {
                 System.out.print(WRONG + input.charAt(i) + RESET);
+                wrongChar.add(input.charAt(i));
             }
         }
         System.out.println("");
         System.out.println(PROMPT + BOLD + "~ " + RESET + BOLD + right + RESET + CORRECT + " Right" + RESET + ", "
                 + BOLD + misplaced + RESET + MISPLACED + " Misplaced" + RESET + ", " + BOLD + (5 - (right + misplaced))
                 + RESET + WRONG + " Wrong" + RESET + PROMPT + BOLD + " ~" + RESET);
+        termKeyboard(qwerty);
+
     }
 
+    // Terminal Keyboard
+    public static void termKeyboard(boolean qwerty) throws Exception {
+        char[] letters = new char[26];
+        InputStream inputStream;
+        if (qwerty) {
+            inputStream = wardle.class.getResourceAsStream("/qwerty.txt");
+        } else {
+            inputStream = wardle.class.getResourceAsStream("/alphabet.txt");
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String output;
+        int j = 0;
+        // Parse File
+        while ((output = reader.readLine()) != null) {
+            letters[j] = output.charAt(0);
+            j++;
+        }
+        for (int i = 0; i < letters.length; i++) {
+            if (i == 10) {
+                System.out.println("");
+                System.out.print("  ");
+            }else if (i == 19) {
+                System.out.println("");
+                System.out.print("    ");
+            }
+            if (correctChar.contains(letters[i])) {
+                System.out.print(RESET + "[" + CORRECT + letters[i] + RESET + "] ");
+            } else if (misplacedChar.contains(letters[i])) {
+                System.out.print(RESET + "[" + MISPLACED + letters[i] + RESET + "] ");
+            } else if (wrongChar.contains(letters[i])) {
+                System.out.print(RESET + "[" + WRONG + letters[i] + RESET + "] ");
+            } else {
+                System.out.print(RESET + "[" + letters[i] + "] ");
+            }
+        }
+        System.out.println("");
+    }
 }
