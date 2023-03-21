@@ -3,7 +3,6 @@ package wardle;
 
 // Imports
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
 public class wardle {
@@ -17,9 +16,9 @@ public class wardle {
     public static String BOLD = "\u001B[1m";
     public static String PROMPT = "\u001B[34m";
     // Number Collectors
-    public static ArrayList<Character> correctChar = new ArrayList<Character>();
-    public static ArrayList<Character> misplacedChar = new ArrayList<Character>();
-    public static ArrayList<Character> wrongChar = new ArrayList<Character>();
+    public static ArrayList<Character> correctChar = new ArrayList<>();
+    public static ArrayList<Character> misplacedChar = new ArrayList<>();
+    public static ArrayList<Character> wrongChar = new ArrayList<>();
     // Game Settings
     public static boolean qwerty = false;
 
@@ -100,15 +99,14 @@ public class wardle {
         introduction();
         // game runs
         while (playing) {
-            System.out.println(RESET + "Type to play to play, help to get a little guide, or exit to quit the program");
+            System.out.println(RESET + "Type play to play, help to get a little guide, or exit to quit the program");
             System.out.print("[" + WRONG + "MENU" + RESET + "]" + PROMPT + "> " + RESET);
             input = scan.nextLine();
             if (input.toUpperCase().toUpperCase().equals("PLAY")) {
                 System.out.println("Good luck!");
                 linebreak(45);
-                //chosen = wardlGet();
-                // For debugging, use: 
-		chosen = "fleck";
+                chosen = wardlGet();
+                // For debugging, use: chosen = "fleck";
                 gameloop(chosen);
             } else if (input.toUpperCase().equals("EXIT")) {
                 System.out.println("Thanks for playing!");
